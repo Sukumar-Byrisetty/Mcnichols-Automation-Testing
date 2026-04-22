@@ -26,7 +26,7 @@ public class OnlineOrderingProductListingPage extends ProductListingPage {
 			Browser.waitForTheLoadingOverlayToDisappear(pageNamePrefixForLogger);
 
 			String heading = Browser.getWebElement(By.cssSelector("h1.category-title")).getText().toLowerCase();
-			if (pageHeading.toLowerCase().contains(heading) || pageHeadingUpdate.toLowerCase().contains(heading) ) {
+			if (pageHeading.toLowerCase().contains(heading) || pageHeadingUpdate.toLowerCase().contains(heading)) {
 				Logger.info(pageNamePrefixForLogger + "Page heading verified.");
 				isAt = true;
 			}
@@ -49,7 +49,9 @@ public class OnlineOrderingProductListingPage extends ProductListingPage {
 
 	@Override
 	public String pageName() {
-		return "Perforated Metal | McNICHOLS®";
+		// return "Perforated Metal | McNICHOLSï¿½";
+		return "Perforated Metal | McNICHOLS";
+
 	}
 
 	@Override
@@ -57,5 +59,5 @@ public class OnlineOrderingProductListingPage extends ProductListingPage {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 }

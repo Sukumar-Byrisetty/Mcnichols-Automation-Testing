@@ -1,14 +1,11 @@
 package com.mcnichols.tests;
 
-import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
 import com.mcnichols.framework.Browser;
 import com.mcnichols.framework.config.LoginCredentials;
 import com.mcnichols.framework.config.TestingConfig;
 import com.mcnichols.framework.pages.Pages;
-import com.mcnichols.framework.pages.ProductListingPage;
-import com.mcnichols.framework.pages.plp.OnlineOrderingProductListingPage;
 import com.mcnichols.framework.util.Logger;
 import com.mcnichols.framework.util.TestUtil;
 import com.mcnichols.tests.util.TestClassBase;
@@ -19,7 +16,7 @@ public class PlaceOrderForRegisteredUser extends TestClassBase {
 	public void canGoToHomePage() throws Exception {
 		verifyTrue(Pages.homePage().isAt(), "Is at Home Page");
 	}
-	
+
 	@Test(dependsOnMethods = { "canGoToHomePage" })
 	public void canGoToLogInPage() throws Exception {
 		Pages.headerPageInclude().goToLoginFromHeader();
@@ -33,7 +30,7 @@ public class PlaceOrderForRegisteredUser extends TestClassBase {
 		verifyFalse(Pages.loginPage().isErrorPresent(), "Error occurred at login!");
 
 		verifyTrue(Pages.homePage().isAt(), "Is at Home Page");
-		
+
 		checkForCartedItemsAndRemove();
 	}
 
@@ -41,48 +38,34 @@ public class PlaceOrderForRegisteredUser extends TestClassBase {
 	public void canGoToOnlineOrderingPage() throws Exception {
 		boolean isGlobalBarPresent = Pages.headerPageInclude().isGlobalBarPresent();
 		Logger.info("Is global header bar present: " + isGlobalBarPresent);
-		
-		ProductListingPage onlineOrderingPLP = Pages.productsPage().getProductListingPage(OnlineOrderingProductListingPage.NAME);
-		onlineOrderingPLP.goToByUrl();
-		
-		verifyTrue(onlineOrderingPLP.isAtByPageHeading());
-		Browser.scrollToElememnt(Browser.getWebElement(By.cssSelector("#listing-top")));
-		onlineOrderingPLP.isProductsFirstItemVisible();
+
+		Pages.headerPageInclude().performOnSiteSearch(TestingConfig.getItemForOnlinePurchase(), true);
 	}
 
 	@Test(dependsOnMethods = { "canGoToOnlineOrderingPage" })
 	public void canGoToProductPage() throws Exception {
-		ProductListingPage onlineOrderingPLP = Pages.productsPage().getProductListingPage(OnlineOrderingProductListingPage.NAME);
-		//onlineOrderingPLP.goToProductsFirstItem();
-		onlineOrderingPLP.goToProductsItem("3");
-		
 		verifyTrue(Pages.productPage().isAt(), "Is at Product Page");
-		
+
 		if (!Pages.productPage().isSkuPurchasableOnline()) {
 			Pages.productPage().selectPurchasableSku();
 		}
-		
+
 		if (!Pages.productPage().isSkuPurchasableOnline()) {
-			// Make another attempt with different item
+			// Make another attempt with a different searchable item
 			Logger.warning("The product page does not have any items available for online purchase!");
-			Logger.warning("Making another Attempt by returning to the PLP and selecting a different item...");
-			onlineOrderingPLP.goToByUrl();
-			
-			verifyTrue(onlineOrderingPLP.isAtByPageHeading());
-			Browser.scrollToElememnt(Browser.getWebElement(By.cssSelector("#listing-top")));
-			onlineOrderingPLP.isProductsFirstItemVisible();
-			onlineOrderingPLP.goToProductsItem("1");
-			
+			Logger.warning("Making another attempt by searching for another online purchasable item...");
+			Pages.headerPageInclude().performOnSiteSearch(TestingConfig.getItemForOnlinePurchase(), true);
+
 			verifyTrue(Pages.productPage().isAt(), "Is at Product Page");
-			
+
 			if (!Pages.productPage().isSkuPurchasableOnline()) {
 				Pages.productPage().selectPurchasableSku();
 			}
 		}
-		
+
 		verifyTrue(Pages.productPage().isSkuPurchasableOnline(), "Can purchase product online");
 	}
-	
+
 	@Test(dependsOnMethods = { "canGoToProductPage" })
 	public void canGoToCartPage() throws Exception {
 		Pages.productPage().addToCart();
@@ -92,7 +75,7 @@ public class PlaceOrderForRegisteredUser extends TestClassBase {
 		Pages.cartPage().getTotalNumberOfCartedItems();
 		verifyFalse(Pages.cartPage().doesItemQuantitiesExceedLimitPerItem());
 	}
-	
+
 	@Test(dependsOnMethods = { "canGoToCartPage" })
 	public void canGoToShippingPage() throws Exception {
 		Pages.cartPage().checkout();
@@ -102,6 +85,7 @@ public class PlaceOrderForRegisteredUser extends TestClassBase {
 		Pages.checkoutShippingPage().selectDeliveryAppoinmentRequired(false);
 		Pages.checkoutShippingPage().selectSpecialHandlingRequired(false);
 		Pages.checkoutShippingPage().selectInstructionsRequired(false);
+		Pages.checkoutShippingPage().selectCommonCarrier();
 	}
 
 	@Test(dependsOnMethods = { "canGoToShippingPage" })
@@ -117,13 +101,13 @@ public class PlaceOrderForRegisteredUser extends TestClassBase {
 		}
 
 		boolean didCheckoutPaymentPageLoad = Pages.checkoutPaymentPage().isAt();
-		
-		// Attempt to remove carted items when a shipping error occurs 
+
+		// Attempt to remove carted items when a shipping error occurs
 		if (!didCheckoutPaymentPageLoad) {
 			TestUtil.takeScreenshot("PlaceOrderForRegisteredUser-FAIL");
 			Logger.fail("Failed to load the payment page from the shipping!");
 			Logger.info("Attempting to remove items from the cart...");
-			
+
 			Pages.cartPage().goToByUrl();
 			Pages.cartPage().isAt();
 			TestUtil.takeScreenshot("PlaceOrderForRegisteredUser-RemoveItemsFromCart");
@@ -131,15 +115,13 @@ public class PlaceOrderForRegisteredUser extends TestClassBase {
 			Pages.cartPage().removeCartedItems();
 			TestUtil.takeScreenshot("PlaceOrderForRegisteredUser-RemoveItemsFromCart");
 		}
-		verifyTrue(didCheckoutPaymentPageLoad, "Is at Checkout Payment Page");		
-		
-		// Proceed if there are no shipping errors
-		if (Pages.checkoutPaymentPage().isDefaultCreditCardSelected() && !Pages.checkoutPaymentPage().isCardVerificationNumberFieldPopulated()) {
-			Pages.checkoutPaymentPage().populateCardVerificationNumberField();
-		} else {
-			verifyTrue(false, "Expected credit card to be default for the user testing account!");
-			// ToDo: Add conditions to handle different scenarios
-		}
+		verifyTrue(didCheckoutPaymentPageLoad, "Is at Checkout Payment Page");
+
+		// Proceed if there are no shipping errors by selecting an existing card when
+		// available, otherwise adding a new card.
+		boolean paymentMethodPrepared = Pages.checkoutPaymentPage().preparePaymentMethod(getUserProfile());
+		verifyTrue(paymentMethodPrepared,
+				"Expected a payment method to be selected or created for the user testing account!");
 	}
 
 	@Test(dependsOnMethods = { "canGoToPaymentPage" })
@@ -161,7 +143,7 @@ public class PlaceOrderForRegisteredUser extends TestClassBase {
 		Browser.waitForSomeTime();
 		Pages.checkoutOrderConfirmationPage().isOrderNumberPresent();
 	}
-	
+
 	public LoginCredentials getUserProfile() {
 		return TestingConfig.getLogin(0);
 	}

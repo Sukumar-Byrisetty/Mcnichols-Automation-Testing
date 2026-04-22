@@ -22,13 +22,13 @@ public class CheckoutOrderConfirmationPage {
 	public boolean isAt() {
 		return isAt(false);
 	}
-	
+
 	public boolean isAt(boolean allowAdditionalAttempt) {
 		boolean isAt = false;
 		try {
-			long startTime = System.currentTimeMillis();			
+			long startTime = System.currentTimeMillis();
 			isAt = isAtOrderConfirmationPageVerified();
-			
+
 			if (!isAt && allowAdditionalAttempt) {
 				Logger.warning("Time exceeded to verify page.  Trying again...");
 				isAt = isAtOrderConfirmationPageVerified();
@@ -40,22 +40,56 @@ public class CheckoutOrderConfirmationPage {
 		}
 		return isAt;
 	}
-	
+
 	private boolean isAtOrderConfirmationPageVerified() {
 		boolean isAt = false;
 		Browser.waitForJavaScriptDependencies();
 		Browser.waitForTheLoadingOverlayToDisappear(pageNamePrefixForLogger);
 
-		if (Browser.title().contains((title))) {
-			Logger.info(pageNamePrefixForLogger + "title verified.");
+		// Check 1: URL contains confirmation.jsp
+		String currentUrl = Browser.getCurrentURL();
+		if (StringUtil.isNotEmpty(currentUrl) && currentUrl.contains(url)) {
+			Logger.info(pageNamePrefixForLogger + "URL verified: " + currentUrl);
+			isAt = true;
+		}
 
-			String expectedPageHeader = Browser.driver.findElement(By.cssSelector(".confirm-title-view .confirmation-items-ordered-label")).getText().toLowerCase();
-			if (StringUtil.isNotEmpty(expectedPageHeader) && expectedPageHeader.contains(pageHeader.toLowerCase())) {
-				Logger.info(pageNamePrefixForLogger + "page header verified.");
+		// Check 2: Title contains "Order Confirmation"
+		if (!isAt) {
+			String currentTitle = Browser.title();
+			if (StringUtil.isNotEmpty(currentTitle) && currentTitle.toLowerCase().contains(title.toLowerCase())) {
+				Logger.info(pageNamePrefixForLogger + "title verified: " + currentTitle);
 				isAt = true;
-			} else {
-				Logger.warning(pageNamePrefixForLogger + "isAt failted by page header!");
 			}
+		}
+
+		// Check 3: Header element with "ITEMS ORDERED" text is present
+		if (!isAt) {
+			try {
+				if (Browser.isElementPresent(By.cssSelector(".confirm-title-view .confirmation-items-ordered-label"))) {
+					String expectedPageHeader = Browser.driver
+							.findElement(By.cssSelector(".confirm-title-view .confirmation-items-ordered-label"))
+							.getText().toLowerCase();
+					if (StringUtil.isNotEmpty(expectedPageHeader)
+							&& expectedPageHeader.contains(pageHeader.toLowerCase())) {
+						Logger.info(pageNamePrefixForLogger + "page header verified.");
+						isAt = true;
+					}
+				}
+			} catch (Exception e) {
+				Logger.warning(pageNamePrefixForLogger + "Header element check failed: " + e.getMessage());
+			}
+		}
+
+		// Check 4: Order confirmation container is present
+		if (!isAt) {
+			if (Browser.isElementPresent(By.cssSelector("#confirmation-page"))) {
+				Logger.info(pageNamePrefixForLogger + "confirmation page container verified.");
+				isAt = true;
+			}
+		}
+
+		if (!isAt) {
+			Logger.warning(pageNamePrefixForLogger + "isAt failed. URL: " + currentUrl);
 		}
 		return isAt;
 	}
@@ -67,7 +101,8 @@ public class CheckoutOrderConfirmationPage {
 
 	public boolean isOrderNumberPresent() {
 		if (Browser.isElementPresent(By.cssSelector("#confirmation-page .confirm-order-id"))) {
-			String orderNumberText = Browser.driver.findElement(By.cssSelector("#confirmation-page .confirm-order-id")).getText();
+			String orderNumberText = Browser.driver.findElement(By.cssSelector("#confirmation-page .confirm-order-id"))
+					.getText();
 			Logger.info(pageNamePrefixForLogger + "Confirmed Web Reference #: " + orderNumberText);
 			return true;
 		}

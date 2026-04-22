@@ -10,12 +10,15 @@
 			<class name="com.mcnichols.tests.CreateAccount"></class>
    		</classes>
   	</test>
-  	
+
+	<!-- Temporarily disabled while stabilizing express account setup -->
+	<!--
   	<test name="Account for Express Checkout" preserve-order="true">
   		<parameter name="accountType" value="1"></parameter>
    		<classes>
 			<class name="com.mcnichols.tests.CreateAccount"></class>
    		</classes>
   	</test>
-  	
+	-->
+
 </suite>

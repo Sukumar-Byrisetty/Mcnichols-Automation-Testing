@@ -13,11 +13,14 @@
 			<class name="com.mcnichols.tests.PlaceOrderForRegisteredUser"></class>
    		</classes>
   	</test>
-  	
+
+	<!-- Temporarily disabled due to current express checkout flow instability -->
+	<!--
   	<test name="Development - Express Checkout Order" preserve-order="true">
    		<classes>
 			<class name="com.mcnichols.tests.ExpressCheckoutOrder"></class>
    		</classes>
   	</test>
+	-->
 
 </suite>

@@ -1,12 +1,10 @@
 package com.mcnichols.tests;
 
-import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
 import com.mcnichols.framework.Browser;
+import com.mcnichols.framework.config.TestingConfig;
 import com.mcnichols.framework.pages.Pages;
-import com.mcnichols.framework.pages.ProductListingPage;
-import com.mcnichols.framework.pages.plp.OnlineOrderingProductListingPage;
 import com.mcnichols.framework.util.Logger;
 import com.mcnichols.tests.util.TestClassBase;
 
@@ -25,10 +23,10 @@ public class ExpressCheckoutOrder extends TestClassBase {
 
 		if (!Pages.homePage().isAt()) {
 			Logger.info("Not at Homepage.  Going to homepage now.");
-			Pages.homePage().goToByUrl();	
+			Pages.homePage().goToByUrl();
 		}
 		verifyTrue(Pages.homePage().isAt(), "Is at Home Page");
-		
+
 		checkForCartedItemsAndRemove();
 	}
 
@@ -36,30 +34,21 @@ public class ExpressCheckoutOrder extends TestClassBase {
 	public void canGoToOnlineOrderingPage() throws Exception {
 		boolean isGlobalBarPresent = Pages.headerPageInclude().isGlobalBarPresent();
 		Logger.info("Is global header bar present: " + isGlobalBarPresent);
-		
-		ProductListingPage onlineOrderingPLP = Pages.productsPage().getProductListingPage(OnlineOrderingProductListingPage.NAME);
-		onlineOrderingPLP.goToByUrl();
-		
-		verifyTrue(onlineOrderingPLP.isAtByPageHeading(), "Is at Online Ordering Page");
-		Browser.scrollToElememnt(Browser.getWebElement(By.cssSelector("#listing-top")));
-		onlineOrderingPLP.isProductsFirstItemVisible();
+
+		Pages.headerPageInclude().performOnSiteSearch(TestingConfig.getItemForOnlinePurchase(), true);
 	}
 
 	@Test(dependsOnMethods = { "canGoToOnlineOrderingPage" })
 	public void canGoToProductPage() throws Exception {
-		ProductListingPage onlineOrderingPLP = Pages.productsPage().getProductListingPage(OnlineOrderingProductListingPage.NAME);
-		//onlineOrderingPLP.goToProductsFirstItem();
-		onlineOrderingPLP.goToProductsItem("8");
-
 		verifyTrue(Pages.productPage().isAt(), "Is at Product Page");
-		
+
 		if (!Pages.productPage().isSkuPurchasableOnline()) {
 			Pages.productPage().selectPurchasableSku();
 		}
-		
+
 		verifyTrue(Pages.productPage().isSkuPurchasableOnline(), "Can purchase product online");
 	}
-	
+
 	@Test(dependsOnMethods = { "canGoToProductPage" })
 	public void canGoToCartPage() throws Exception {
 		Pages.productPage().addToCart();
@@ -67,7 +56,8 @@ public class ExpressCheckoutOrder extends TestClassBase {
 		verifyTrue(Pages.cartPage().isAt(), "Is at Cart Page");
 
 		Pages.cartPage().getTotalNumberOfCartedItems();
-		verifyFalse(Pages.cartPage().doesItemQuantitiesExceedLimitPerItem(), "Does Item Quantities Exceed Limit Per Order");
+		verifyFalse(Pages.cartPage().doesItemQuantitiesExceedLimitPerItem(),
+				"Does Item Quantities Exceed Limit Per Order");
 		verifyTrue(Pages.cartPage().isExpressCheckoutAvailable(), "Is Express Checkout Avaiable");
 	}
 

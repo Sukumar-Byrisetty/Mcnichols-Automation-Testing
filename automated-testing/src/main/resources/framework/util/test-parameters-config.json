@@ -1,190 +1,205 @@
 {
-	"Logins" : [
-		{
-			"Username" : "beebee.ate.bot.tester@yopmail.com",
-			"Password" : "ThisIsBAT6789@",
-			"Profile" : [{
-				"firstName" : "Beebee",
-				"lastName" : "Ate",
-				"colorSecurityAnwser" : "Blue",
-				"phone1" : "770.651.5852",
-				"address" : "2149 Pine Garden Lane",
-				"city" : "Atlanta",
-				"state" : "GA",
-				"zip" : "30303",
-				"country" : "United States"
-			}],
-			"CreditCards" : [{
-				"number" : "4012 8888 8888 1881",
-				"expirationMonth" : "01",
-				"expirationYear" : "2026",
-				"cvn" : "123",
-				"name" : "Beebee Ate"
-			}],
-			"_comments" : "A normal account without Express Checkout set."
-		},
-		{
-			"Username" : "artoo.detoo.bot.tester@yopmail.com",
-			"Password" : "ThisIsBAT6789@",
-			"Profile" : [{
-				"firstName" : "Artoo",
-				"lastName" : "Detoo",
-				"colorSecurityAnwser" : "Green",
-				"phone1" : "305.398.1697",
-				"address" : "1315 Marigold Lane",
-				"city" : "Miami",
-				"state" : "FL",
-				"zip" : "33169",
-				"country" : "United States"
-			}],
-			"CreditCards" : [{
-				"number" : "4012 8888 8888 1881",
-				"expirationMonth" : "01",
-				"expirationYear" : "2026",
-				"cvn" : "123",
-				"name" : "Artoo Detoo"
-			}],
-			"_comments" : "This account is setup for Express Checkout."
-		}
-	],
-	
-	"Dev-Logins" : [
-		{
-			"Username" : "siri.bot.tester.mcnichols@yopmail.com",
-			"Password" : "ThisIsBAT6789@",
-			"Profile" : [{
-				"firstName" : "Siri",
-				"lastName" : "Apple",
-				"colorSecurityAnwser" : "Red",
-				"phone1" : "408.996.1010",
-				"address" : "1 Apple Park Way",
-				"city" : "Cupertino",
-				"state" : "CA",
-				"zip" : "95014",
-				"country" : "United States"
-			}],
-			"CreditCards" : [{
-				"number" : "4012 8888 8888 1881",
-				"expirationMonth" : "01",
-				"expirationYear" : "2026",
-				"cvn" : "123",
-				"name" : "Siri Apple"
-			}],
-			"_comments" : "A normal account without Express Checkout set."
-		},
-		{
-			"Username" : "cortana.bot.tester@yopmail.com",
-			"Password" : "ThisIsBAT6789@",
-			"Profile" : [{
-				"firstName" : "Cortana",
-				"lastName" : "Microsoft",
-				"colorSecurityAnwser" : "Green",
-				"phone1" : "813.888.8314",
-				"address" : "6836 Mitchell Cir",
-				"city" : "Tampa",
-				"state" : "FL",
-				"zip" : "33634",
-				"country" : "United States"
-			}],
-			"CreditCards" : [{
-				"number" : "4012 8888 8888 1881",
-				"expirationMonth" : "01",
-				"expirationYear" : "2026",
-				"cvn" : "123",
-				"name" : "Cortana Microsoft"
-			}],
-			"_comments" : "This account is setup for Express Checkout."
-		},
-		{
-			"Username" : "alexa.bot.tester.mcnichols@yopmail.com",
-			"Password" : "ThisIsBAT6789@",
-			"Profile" : [{
-				"firstName" : "Alexa",
-				"lastName" : "Amazon",
-				"colorSecurityAnwser" : "Blue",
-				"phone1" : "206.721.8527",
-				"address" : "9241 13th Ave SW",
-				"city" : "Seattle",
-				"state" : "WA",
-				"zip" : "98106",
-				"country" : "United States"
-			}],
-			"CreditCards" : [{
-				"number" : "4012 8888 8888 1881",
-				"expirationMonth" : "01",
-				"expirationYear" : "2026",
-				"cvn" : "123",
-				"name" : "Alexa Amazon"
-			}],
-			"_comments" : "A normal account without Express Checkout set."
-		}
-	],
-	
-	"Prod-Logins" : [
-		{
-			"Username" : "roe.bot.tester@yopmail.com",
-			"Password" : "ThisIsBAT6789@",
-			"Profile" : [{
-				"firstName" : "Roe",
-				"lastName" : "Bot",
-				"colorSecurityAnwser" : "Blue",
-				"phone1" : "813.207.8525",
-				"address" : "9616 Park St.",
-				"city" : "Tampa",
-				"state" : "FL",
-				"zip" : "33614",
-				"country" : "United States"
-			}],
-			"CreditCards" : [{
-				"number" : "4012 8888 8888 1881",
-				"expirationMonth" : "01",
-				"expirationYear" : "2026",
-				"cvn" : "123",
-				"name" : "Roe Bot"
-			}],
-			"_comments" : "A normal account without Express Checkout set. Users: beebee.ate.bot.tester@yopmail.com, roe.bot.tester@yopmail.com"
-		},
-		{
-			"Username" : "artoo.detoo.bot.tester@yopmail.com",
-			"Password" : "ThisIsBAT6789@",
-			"Profile" : [{
-				"firstName" : "Artoo",
-				"lastName" : "Detoo",
-				"colorSecurityAnwser" : "Green",
-				"phone1" : "305.398.1697",
-				"address" : "1315 Marigold Lane",
-				"city" : "Miami",
-				"state" : "FL",
-				"zip" : "33169",
-				"country" : "United States"
-			}],
-			"CreditCards" : [{
-				"number" : "4012 8888 8888 1881",
-				"expirationMonth" : "01",
-				"expirationYear" : "2026",
-				"cvn" : "123",
-				"name" : "Artoo Detoo"
-			}],
-			"_comments" : "This account is setup for Express Checkout."
-		}
-	],
-	
+  "Logins": [
+    {
+      "Username": "beebee.ate.bot.tester@yopmail.com",
+      "Password": "ThisIsBAT6789@",
+      "Profile": [
+        {
+          "firstName": "Beebee",
+          "lastName": "Ate",
+          "colorSecurityAnwser": "Blue",
+          "phone1": "770.651.5852",
+          "address": "2149 Pine Garden Lane",
+          "city": "Atlanta",
+          "state": "GA",
+          "zip": "30303",
+          "country": "United States"
+        }
+      ],
+      "CreditCards": [
+        {
+          "number": "4012 8888 8888 1881",
+          "expirationMonth": "01",
+          "expirationYear": "2026",
+          "cvn": "123",
+          "name": "Beebee Ate"
+        }
+      ],
+      "_comments": "A normal account without Express Checkout set."
+    },
+    {
+      "Username": "artoo.detoo.bot.tester@yopmail.com",
+      "Password": "ThisIsBAT6789@",
+      "Profile": [
+        {
+          "firstName": "Artoo",
+          "lastName": "Detoo",
+          "colorSecurityAnwser": "Green",
+          "phone1": "305.398.1697",
+          "address": "1315 Marigold Lane",
+          "city": "Miami",
+          "state": "FL",
+          "zip": "33169",
+          "country": "United States"
+        }
+      ],
+      "CreditCards": [
+        {
+          "number": "4012 8888 8888 1881",
+          "expirationMonth": "01",
+          "expirationYear": "2026",
+          "cvn": "123",
+          "name": "Artoo Detoo"
+        }
+      ],
+      "_comments": "This account is setup for Express Checkout."
+    }
+  ],
 
-	"SearchTerms" : [
-		"rungs",
-		"plank",
-		"14333122"
-	],
+  "Dev-Logins": [
+    {
+      "Username": "siri.bot.tester.mcnichols.20260421a@yopmail.com",
+      "Password": "ThisIsBAT6789@",
+      "Profile": [
+        {
+          "firstName": "Siri",
+          "lastName": "Apple",
+          "colorSecurityAnwser": "Red",
+          "phone1": "408.996.1010",
+          "address": "1 Apple Park Way",
+          "city": "Cupertino",
+          "state": "CA",
+          "zip": "95014",
+          "country": "United States"
+        }
+      ],
+      "CreditCards": [
+        {
+          "number": "4012 8888 8888 1881",
+          "expirationMonth": "01",
+          "expirationYear": "2026",
+          "cvn": "123",
+          "name": "Siri Apple"
+        }
+      ],
+      "_comments": "A normal account without Express Checkout set."
+    },
+    {
+      "Username": "cortana.bot.tester@yopmail.com",
+      "Password": "ThisIsBAT6789@",
+      "Profile": [
+        {
+          "firstName": "Cortana",
+          "lastName": "Microsoft",
+          "colorSecurityAnwser": "Green",
+          "phone1": "813.888.8314",
+          "address": "6836 Mitchell Cir",
+          "city": "Tampa",
+          "state": "FL",
+          "zip": "33634",
+          "country": "United States"
+        }
+      ],
+      "CreditCards": [
+        {
+          "number": "4012 8888 8888 1881",
+          "expirationMonth": "01",
+          "expirationYear": "2026",
+          "cvn": "123",
+          "name": "Cortana Microsoft"
+        }
+      ],
+      "_comments": "This account is setup for Express Checkout."
+    },
+    {
+      "Username": "alexa.bot.tester.mcnichols@yopmail.com",
+      "Password": "ThisIsBAT6789@",
+      "Profile": [
+        {
+          "firstName": "Alexa",
+          "lastName": "Amazon",
+          "colorSecurityAnwser": "Blue",
+          "phone1": "206.721.8527",
+          "address": "9241 13th Ave SW",
+          "city": "Seattle",
+          "state": "WA",
+          "zip": "98106",
+          "country": "United States"
+        }
+      ],
+      "CreditCards": [
+        {
+          "number": "4012 8888 8888 1881",
+          "expirationMonth": "01",
+          "expirationYear": "2026",
+          "cvn": "123",
+          "name": "Alexa Amazon"
+        }
+      ],
+      "_comments": "A normal account without Express Checkout set."
+    }
+  ],
 
-	"ItemsEligibleForOnlinePurchase" : [
-		"14333122M1",
-		"16986120M7",
-		"16642722M2"
-	],
+  "Prod-Logins": [
+    {
+      "Username": "roe.bot.tester@yopmail.com",
+      "Password": "ThisIsBAT6789@",
+      "Profile": [
+        {
+          "firstName": "Roe",
+          "lastName": "Bot",
+          "colorSecurityAnwser": "Blue",
+          "phone1": "813.207.8525",
+          "address": "9616 Park St.",
+          "city": "Tampa",
+          "state": "FL",
+          "zip": "33614",
+          "country": "United States"
+        }
+      ],
+      "CreditCards": [
+        {
+          "number": "4012 8888 8888 1881",
+          "expirationMonth": "01",
+          "expirationYear": "2026",
+          "cvn": "123",
+          "name": "Roe Bot"
+        }
+      ],
+      "_comments": "A normal account without Express Checkout set. Users: beebee.ate.bot.tester@yopmail.com, roe.bot.tester@yopmail.com"
+    },
+    {
+      "Username": "artoo.detoo.bot.tester@yopmail.com",
+      "Password": "ThisIsBAT6789@",
+      "Profile": [
+        {
+          "firstName": "Artoo",
+          "lastName": "Detoo",
+          "colorSecurityAnwser": "Green",
+          "phone1": "305.398.1697",
+          "address": "1315 Marigold Lane",
+          "city": "Miami",
+          "state": "FL",
+          "zip": "33169",
+          "country": "United States"
+        }
+      ],
+      "CreditCards": [
+        {
+          "number": "4012 8888 8888 1881",
+          "expirationMonth": "01",
+          "expirationYear": "2026",
+          "cvn": "123",
+          "name": "Artoo Detoo"
+        }
+      ],
+      "_comments": "This account is setup for Express Checkout."
+    }
+  ],
 
-	"ItemsNotEligibleForOnlinePurchase" : [
-		"1453312238",
-		"179r0032",
-		"2410201410"
-	]
+  "SearchTerms": ["rungs", "plank", "14333122"],
+
+  "ItemsEligibleForOnlinePurchase": ["14333122M1", "16986120M7", "16642722M2"],
+
+  "ItemsNotEligibleForOnlinePurchase": ["1453312238", "179r0032", "2410201410"]
 }

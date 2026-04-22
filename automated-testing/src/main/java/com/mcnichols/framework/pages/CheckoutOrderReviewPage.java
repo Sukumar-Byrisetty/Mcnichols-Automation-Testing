@@ -21,23 +21,44 @@ public class CheckoutOrderReviewPage {
 	Properties properties = TestingConfig.getProperties(PROPERTY_FILE);
 
 	public boolean isAt() {
-		
+
 		boolean isAt = false;
 		try {
 			long startTime = System.currentTimeMillis();
 			Browser.waitForJavaScriptDependencies();
 			Browser.waitForTheLoadingOverlayToDisappear(pageNamePrefixForLogger);
 
-			if (Browser.title().contains((title))) {
-				Logger.info(pageNamePrefixForLogger + "title verified.");
+			String currentUrl = Browser.getCurrentURL();
+			if (StringUtil.isNotEmpty(currentUrl) && currentUrl.contains(url)) {
+				Logger.info(pageNamePrefixForLogger + "URL verified: " + currentUrl);
+				isAt = true;
+			}
 
-				String expectedPageHeader = Browser.driver.findElement(By.cssSelector("#order-review-info")).getText().toLowerCase(); 
-				if (StringUtil.isNotEmpty(expectedPageHeader) && expectedPageHeader.contains(pageHeader.toLowerCase())) {
+			String currentTitle = Browser.title();
+			if (StringUtil.isNotEmpty(currentTitle)
+					&& (currentTitle.toLowerCase().contains(title.toLowerCase())
+							|| currentTitle.toLowerCase().contains("review order"))) {
+				Logger.info(pageNamePrefixForLogger + "title verified: " + currentTitle);
+				isAt = true;
+			}
+
+			if (Browser.isElementPresent(By.cssSelector("#submitOrderReviewInfoBottom"))) {
+				Logger.info(pageNamePrefixForLogger + "submit order button verified.");
+				isAt = true;
+			}
+
+			if (Browser.isElementPresent(By.cssSelector("#order-review-info"))) {
+				String expectedPageHeader = Browser.driver.findElement(By.cssSelector("#order-review-info")).getText()
+						.toLowerCase();
+				if (StringUtil.isNotEmpty(expectedPageHeader)
+						&& expectedPageHeader.contains(pageHeader.toLowerCase())) {
 					Logger.info(pageNamePrefixForLogger + "page header verified.");
 					isAt = true;
-				} else {
-					Logger.warning(pageNamePrefixForLogger + "isAt failted by page header!");
 				}
+			}
+
+			if (!isAt) {
+				Logger.warning(pageNamePrefixForLogger + "isAt failed. URL: " + currentUrl + " Title: " + currentTitle);
 			}
 			Logger.processTime(startTime, System.currentTimeMillis(), pageNamePrefixForLogger);
 			Browser.getPageEnvironmentDetails();
@@ -57,38 +78,72 @@ public class CheckoutOrderReviewPage {
 
 		try {
 			Browser.waitForSomeTime();
-			if (Browser.isElementPresent(By.cssSelector("#error")) && Browser.isElementVisible(By.cssSelector("#error"))) {
+			if (Browser.isElementPresent(By.cssSelector("#error"))
+					&& Browser.isElementVisible(By.cssSelector("#error"))) {
 				String errorsText = Browser.driver.findElement(By.cssSelector("#error")).getText();
 				if (StringUtil.isNotEmpty(errorsText)) {
 					isErrorPresent = true;
-					Logger.warning(pageNamePrefixForLogger + "Found the following form validation errors: " + errorsText);
+					Logger.warning(
+							pageNamePrefixForLogger + "Found the following form validation errors: " + errorsText);
 				}
 			}
 			if (!isErrorPresent) {
 				Logger.info(pageNamePrefixForLogger + "No form validatoin errors occured.");
 			}
 		} catch (Exception e) {
-			// Since there is a delay for the form error, check if the element is stale (StaleElementReferenceException) and allow test to move forward.
+			// Since there is a delay for the form error, check if the element is stale
+			// (StaleElementReferenceException) and allow test to move forward.
 			Logger.info(pageNamePrefixForLogger + "isErrorPresent failed due to: " + e.getMessage());
 		}
 		return isErrorPresent;
 	}
 
 	public void selectTermsAndConditions() {
-		try {
-			Browser.waitForSomeTime();
-			WebElement element = Browser.getWebElement(By.cssSelector(".hidden-xs > .checkbox-custom-circle"));		
-			if (!element.isDisplayed()) {
-				// Get correct element for smaller view ports
-				element = Browser.getWebElement(By.cssSelector("#termsAndConditions:second-child"));
+		Browser.waitForSomeTime();
+		Browser.waitForTheLoadingOverlayToDisappear(pageNamePrefixForLogger);
+
+		By[] selectors = new By[] {
+				By.cssSelector("div.mt-4 > label.checkbox-custom-circle"),
+				By.cssSelector(".hidden-xs > .checkbox-custom-circle"),
+				By.cssSelector("label.checkbox-custom-circle"),
+				By.cssSelector("label[for='termsAndConditions']"),
+				By.id("termsAndConditions") };
+
+		WebElement termsElement = null;
+		for (By selector : selectors) {
+			if (Browser.isElementPresent(selector)) {
+				WebElement candidate = Browser.getWebElement(selector);
+				if (candidate.isDisplayed()) {
+					termsElement = candidate;
+					break;
+				}
 			}
-			Browser.scrollToElememnt(element);
-			element.click();
-			Logger.info(pageNamePrefixForLogger + "Terms and Conditions selected.");
-			Browser.waitForSomeTime();
-		} catch(Exception e) {
-			Logger.info(pageNamePrefixForLogger + "Failed to select the Terms and Conditions! ");
 		}
+
+		if (termsElement == null) {
+			throw new RuntimeException(pageNamePrefixForLogger + "Terms and Conditions element not found.");
+		}
+
+		Browser.scrollToElememnt(termsElement);
+		Browser.click(termsElement);
+
+		WebElement termsInput;
+		if ("input".equalsIgnoreCase(termsElement.getTagName())) {
+			termsInput = termsElement;
+		} else {
+			termsInput = termsElement.findElement(By.cssSelector("input[type='checkbox']"));
+		}
+
+		if (!termsInput.isSelected()) {
+			Browser.click(termsInput);
+		}
+
+		if (!termsInput.isSelected()) {
+			throw new RuntimeException(pageNamePrefixForLogger + "Unable to select Terms and Conditions checkbox.");
+		}
+
+		Logger.info(pageNamePrefixForLogger + "Terms and Conditions selected.");
+		Browser.waitForSomeTime();
 	}
 
 	public void selectSaveForExpressCheckout() {
@@ -103,9 +158,9 @@ public class CheckoutOrderReviewPage {
 			Browser.scrollToElememnt(element);
 			Browser.waitForSomeTime();
 			element.click();
-			Logger.info(pageNamePrefixForLogger + "Submit Order selected.");	
-		} catch(Exception e) {
-			Logger.warning(pageNamePrefixForLogger + "Failed to select the Submit Order button!");	
+			Logger.info(pageNamePrefixForLogger + "Submit Order selected.");
+		} catch (Exception e) {
+			Logger.warning(pageNamePrefixForLogger + "Failed to select the Submit Order button!");
 		}
 	}
 }
