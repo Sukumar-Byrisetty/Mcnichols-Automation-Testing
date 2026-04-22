@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+
+	<entry key="global.bar">#announcementBar</entry>
+	<entry key="global.bar.close">.Announcement-bar-close-icon</entry>
+
+	<entry key="header.1">header</entry>
+	<entry key="header.1.logo">header.mcnichols-logo img</entry>
+
+	<entry key="header.navigation.css-selector">nav.navbar</entry>
+	<entry key="header.navigation.products.link-text">PRODUCTS</entry>
+	<entry key="header.navigation.resources.link-text">Resources</entry>
+	<entry key="header.navigation.services.link-text">Services</entry>
+	<entry key="header.navigation.locations.link-text">LOCATIONS</entry>
+	<entry key="header.navigation.careers.link-text">Careers</entry>
+	<entry key="header.navigation.support.link-text">Support</entry>
+
+	<entry key="header.on-site.search.term">ladder</entry>
+
+	<entry key="footer.widgets.id">footer-widgets</entry>
+	<entry key="footer.1.id">footer</entry>
+	
+</properties>
+

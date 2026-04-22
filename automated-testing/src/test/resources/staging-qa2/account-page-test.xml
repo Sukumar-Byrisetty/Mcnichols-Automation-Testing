@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Staging QA2 Functional Test Suite" verbose="1">
+	<parameter name="base.url" value="https://ww2-stage.mcnichols.com/" />
+	<parameter name="browser.name" value="chrome" /> <!-- Browser names: chrome, firefox -->
+	<parameter name="browser.viewport" value="XL" /> <!-- Browser viewport options: XL, L, S, XS -->
+	<parameter name="accountlanding" value="/account/account-landing.jsp"></parameter>
+	<parameter name="accountCC" value="/account/credit-cards.jsp"></parameter>
+
+  	<test name="QA2 - My Account - Credit Card Page Test" preserve-order="true">
+   		<classes>
+			<class name="com.mcnichols.tests.MyAccountTest"></class>
+   		</classes>
+  	</test>
+
+</suite>

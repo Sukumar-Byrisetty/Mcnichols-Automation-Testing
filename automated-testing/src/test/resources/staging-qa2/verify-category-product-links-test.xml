@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Staging QA2 Category Test" verbose="1">
+	<parameter name="base.url" value="https://ww2-stage.mcnichols.com/" />
+	<parameter name="browser.name" value="chrome" /> <!-- Browser names: chrome, firefox -->
+	<parameter name="browser.viewport" value="XL" /> <!-- Browser viewport options: XL, L, S, XS -->
+
+  	<test name="QA2 - Verify Stair Treads Category Product Links Test" preserve-order="true">
+  		<parameter name="category.path" value="/stair-treads" />
+   		<classes>
+			<class name="com.mcnichols.tests.VerifyPagesFromCategoryPage"></class>
+   		</classes>
+  	</test>
+
+</suite>

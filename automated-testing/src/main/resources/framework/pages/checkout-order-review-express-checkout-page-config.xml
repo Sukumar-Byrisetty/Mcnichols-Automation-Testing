@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="page.title">McNichols - Review Order</entry>
+	<entry key="page.url">/checkout/review-express.jsp</entry>
+	<entry key="page.header">EXPRESS CHECKOUT</entry>
+	
+	<entry key="credit-card.cvn">123</entry>
+		
+</properties>

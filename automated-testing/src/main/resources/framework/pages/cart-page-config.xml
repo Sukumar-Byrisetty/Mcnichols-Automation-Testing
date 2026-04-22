@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="page.title">McNichols - Shopping Cart</entry>
+	<entry key="page.url">/checkout/cart.jsp</entry>
+	<entry key="page.header">SHOPPING CART</entry>
+	<entry key="test.page.name.prefix">Cart Page - </entry>
+
+	<entry key="item-quantities-limit">5</entry>
+</properties>

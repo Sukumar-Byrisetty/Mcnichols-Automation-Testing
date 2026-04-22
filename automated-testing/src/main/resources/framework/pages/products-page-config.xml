@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="page.title">Hole Products | McNICHOLS®</entry>
+	<entry key="page.url">/all-products</entry>
+
+	<entry key="all-products.css-selector">.mkt-allproducts</entry>
+
+	<entry key="product.perforated-metal.css-selector">.mkt-products img[title="Perforated Metal"]</entry>
+
+</properties>
+

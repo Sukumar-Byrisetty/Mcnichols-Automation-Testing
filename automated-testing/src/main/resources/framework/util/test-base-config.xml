@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<!-- 
+	Configuration file to set the chrome driver with the correct browser version.	
+	Through WebDriver, Selenium supports all major browsers on the market such as 
+	Chrom(ium), Firefox, Internet Explorer, Opera, and Safari.
+	
+	Driver Requirements:
+	https://www.selenium.dev/documentation/en/webdriver/driver_requirements/
+	
+	Downloads:
+	ChromeDriver - WebDriver for Chrome:
+	Chrome for Testing: https://googlechromelabs.github.io/chrome-for-testing/
+	JSON API endpoints: https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json
+	Description: Download the chromedriver-win32.zip from the latest Stable version.  
+	Update the file name from chromedriver.exe to include the platform and the version. 
+		Example: chromedriver-win32-121.0.6167.85.exe
+	
+	Old URL Resources:
+		New Site: https://sites.google.com/chromium.org/driver/
+		Old Site: https://sites.google.com/a/chromium.org/chromedriver/downloads
+	
+	Geckodriver - WebDriver for Firefox:
+	https://github.com/mozilla/geckodriver/releases
+ -->
+<properties>
+	<entry key="use.headless.mode">true</entry>
+	
+	<entry key="web.driver.chrome">webdriver.chrome.driver</entry>
+	<entry key="web.driver.location.chrome">/src/main/resources/webdrivers/chromedriver-win64-143.0.7499.42.exe</entry>
+	<entry key="chrome.user.data.dir">C:\tmp\chromedriver</entry>
+	<entry key="use.chrome.best.practices">true</entry>
+	<entry key="use.chrome.incognito.mode">true</entry>
+	
+	<entry key="web.driver.firefox">webdriver.gecko.driver</entry>
+	<entry key="web.driver.location.firefox">/src/main/resources/webdrivers/geckodriver.exe</entry>
+</properties>

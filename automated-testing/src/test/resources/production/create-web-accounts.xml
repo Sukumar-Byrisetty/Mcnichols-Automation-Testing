@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Production Website Account Tests" verbose="1">
+	<parameter name="env" value="prod" />
+	<parameter name="base.url" value="https://www.mcnichols.com/" />
+	<parameter name="browser.name" value="chrome" /> <!-- Browser names: chrome, firefox -->
+	<parameter name="browser.viewport" value="XL" /> <!-- Browser viewport options: XL, L, S, XS -->
+  	
+	<suite-files>
+		<suite-file path="../test-suite/create-web-account.xml"/>
+    </suite-files>
+
+</suite>

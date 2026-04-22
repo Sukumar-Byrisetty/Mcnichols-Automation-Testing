@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Development Product Page Test" verbose="1">
+	<!-- <parameter name="base.url" value="https://www-dev.mcnichols.com/" />  -->
+	<parameter name="base.url" value="https://www-stage.mcnichols.com/" />
+	<!-- <parameter name="base.url" value="https://www.mcnichols.com/" /> -->
+	<parameter name="browser.name" value="chrome" /> <!-- Browser names: chrome, firefox -->
+	<parameter name="browser.viewport" value="XL" /> <!-- Browser viewport options: XL, L, S, XS -->
+	
+
+  	<!-- <test name="Sandbox Product Page Trench Drain Test" preserve-order="true">
+  		<parameter name="product.path" value="/trench-drain-systems/polycast-sup-reg-sup-system/polymer-concrete-f3pc188820" />
+   		<classes>
+			<class name="com.mcnichols.tests.sandbox.ProductPageTest"></class>
+   		</classes>
+  	</test> -->
+  	
+  	<test name="Sandbox Product Page Trench Drain Test" preserve-order="true">
+  		<parameter name="product.path" value="/wire-mesh/square/galvanized-steel-gv-340242" />
+   		<classes>
+			<class name="com.mcnichols.tests.sandbox.ProductPageTest"></class>
+   		</classes>
+  	</test>
+
+</suite>

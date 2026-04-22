@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="page.title">Perforated Metal</entry>
+	<entry key="page.url">/perforated-metal</entry>
+
+	<entry key="tile.round.css-selector">.tile-name .subcategory img[title="Round"]</entry>
+	<entry key="tile.square.css-selector">.tile-name .subcategory img[title="Square"]</entry>
+	<entry key="tile.slotted.css-selector">.tile-name .subcategory img[title="Slotted"]</entry>
+	<entry key="tile.hexagonal.css-selector">.tile-name .subcategory img[title="Hexagonal"]</entry>
+	<entry key="tile.designer.css-selector">.tile-name .subcategory img[title="title="Designer Perforated""]</entry>
+	<entry key="tile.accessories.css-selector">.tile-name .subcategory img[title="ACCESSORIES"]</entry>
+
+	<entry key="refinements.round.css-selector">.mkt-allproducts</entry>
+
+	<entry key="tab.products.css-selector">#productResourceId</entry>
+	<entry key="tab.overview.css-selector">#Overviewid</entry>
+	<entry key="tab.ordering.css-selector">#Orderingid</entry>
+	<entry key="tab.charts.css-selector">#Chartsid</entry>
+	<entry key="tab.tables.css-selector">#Tablesid</entry>
+
+	<!-- <entry key="product-1.css-selector">.mkt-products img[title="Perforated Metal"]</entry> -->
+	<entry key="perforated-metal.product.css-selector">.mkt-products img[title="Perforated Metal"]</entry>
+	
+
+</properties>
+

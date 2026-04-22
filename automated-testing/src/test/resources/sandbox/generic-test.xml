@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Sandbox Generic Test Suite" verbose="1">
+	<parameter name="base.url" value="https://www-dev.mcnichols.com/" />
+	<parameter name="browser.name" value="chrome" /> <!-- Browser names: chrome, firefox -->
+	<parameter name="browser.viewport" value="XS" /> <!-- Browser viewport options: XL, L, S, XS -->
+
+	<parameter name="product.path" value="/trench-drain-systems/polycast-sup-reg-sup-system/polymer-concrete-f3pc188820" />
+
+  	<test name="Sandbox - Generic Test 1" preserve-order="true">
+   		<classes>
+			<class name="com.mcnichols.tests.sandbox.GenericTest"></class>
+   		</classes>
+  	</test>
+  	
+  	<test name="Sandbox - Generic Test 2" preserve-order="true">
+   		<classes>
+			<class name="com.mcnichols.tests.sandbox.GenericTest"></class>
+   		</classes>
+  	</test>
+
+</suite>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Development Regression Test" verbose="1">
+	<parameter name="env" value="dev" />
+	<parameter name="base.url" value="https://ww2-dev.mcnichols.com/" />
+	<parameter name="browser.name" value="chrome" /> <!-- Browser names: chrome, firefox -->
+	<parameter name="browser.viewport" value="XL" /> <!-- Browser viewport options: XL, L, S, XS -->
+
+  	<test name="Development - Place Order for Registered User" preserve-order="true">
+   		<classes>
+			<class name="com.mcnichols.tests.PlaceOrderForRegisteredUser"></class>
+   		</classes>
+  	</test>
+  	
+  	<test name="Development - Express Checkout Order" preserve-order="true">
+   		<classes>
+			<class name="com.mcnichols.tests.ExpressCheckoutOrder"></class>
+   		</classes>
+  	</test>
+
+</suite>

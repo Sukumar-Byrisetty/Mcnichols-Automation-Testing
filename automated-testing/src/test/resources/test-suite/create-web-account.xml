@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Create Web Accounts" verbose="1">
+
+  	<test name="Standard Account" preserve-order="true">
+  		<parameter name="accountType" value="0"></parameter>
+   		<classes>
+			<class name="com.mcnichols.tests.CreateAccount"></class>
+   		</classes>
+  	</test>
+  	
+  	<test name="Account for Express Checkout" preserve-order="true">
+  		<parameter name="accountType" value="1"></parameter>
+   		<classes>
+			<class name="com.mcnichols.tests.CreateAccount"></class>
+   		</classes>
+  	</test>
+  	
+</suite>

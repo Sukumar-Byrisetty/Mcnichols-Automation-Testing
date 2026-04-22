@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Development Endpoint Regression Test" verbose="1">
+	<parameter name="env" value="prod" />
+	<parameter name="browser.name" value="chrome" /> <!-- Browser names: chrome, firefox -->
+	<parameter name="browser.viewport" value="XL" /> <!-- Browser viewport options: XL, L, S, XS -->
+	
+	<!-- tpcpatgapp02 - START -->
+	<test name="tpcpatgapp02 - Place Order for Registered User" preserve-order="true">
+		<parameter name="base.url" value="http://tpcpatgapp02.mcnichols.com:7003/" />
+   		<classes>
+			<class name="com.mcnichols.tests.PlaceOrderForRegisteredUser"></class>
+   		</classes>
+  	</test>
+  	
+  	<test name="tpcpatgapp02 - Place Quote for Guest User" preserve-order="true">
+  		<parameter name="base.url" value="http://tpcpatgapp02.mcnichols.com:7003/" />
+   		<classes>
+			<class name="com.mcnichols.tests.PlaceQuoteForGuestUser"></class>
+   		</classes>
+  	</test>
+  	 <!-- tpcpatgapp02 - END -->
+  	
+	<!-- tpcpatgapp03 - START -->
+	<test name="tpcpatgapp03 - Place Order for Registered User" preserve-order="true">
+		<parameter name="base.url" value="http://tpcpatgapp03.mcnichols.com:7003/" />
+   		<classes>
+			<class name="com.mcnichols.tests.PlaceOrderForRegisteredUser"></class>
+   		</classes>
+  	</test>
+  	
+  	<test name="tpcdatgapp03 - Place Quote for Guest User" preserve-order="true">
+  		<parameter name="base.url" value="http://tpcpatgapp03.mcnichols.com:7003/" />
+   		<classes>
+			<class name="com.mcnichols.tests.PlaceQuoteForGuestUser"></class>
+   		</classes>
+  	</test>
+  	<!-- tpcpatgapp03 - END -->
+</suite>
+

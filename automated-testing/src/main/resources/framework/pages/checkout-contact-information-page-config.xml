@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="page.title">McNichols - Login</entry>
+	<entry key="page.url">/checkout/contact-info.jsp</entry>
+	<entry key="page.header">CONTACT INFORMATION</entry>
+
+	<entry key="guest.first.name">Bot</entry>
+	<entry key="guest.last.name">Tester</entry>
+	<entry key="guest.address1">5401 Hangar Court</entry>
+	<entry key="guest.city">TAMPA</entry>
+	<entry key="guest.state">FL - Florida</entry>
+	<entry key="guest.zip.code">33634-5341</entry>	
+	<entry key="guest.phone">8135555555</entry>
+	<entry key="guest.email">bot.tester.mcnichols@yopmail.com</entry>
+</properties>

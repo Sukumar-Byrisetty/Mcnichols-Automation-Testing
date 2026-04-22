@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="page.title">McNichols - Checkout Payment</entry>
+	<entry key="page.url">/checkout/payment.jsp</entry>
+	<entry key="page.header">PAYMENT METHOD</entry>
+	
+	<entry key="credit-card.cvn">123</entry>
+		
+</properties>

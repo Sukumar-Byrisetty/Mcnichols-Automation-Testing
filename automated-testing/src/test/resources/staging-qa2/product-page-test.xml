@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Staging QA2 Product Page Test" verbose="1">
+
+	<parameter name="base.url" value="https://ww2-stage.mcnichols.com/" />
+	<parameter name="product.path" value="/trench-drain-systems/polycast-sup-reg-sup-system/polymer-concrete-f3pc188820" />
+
+  	<test name="QA2 - Product Page Trench Drain Test" preserve-order="true">
+   		<classes>
+			<class name="com.mcnichols.tests.sandbox.ProductPageTest"></class>
+   		</classes>
+  	</test>
+
+</suite>

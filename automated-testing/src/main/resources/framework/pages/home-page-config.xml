@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="page.title">McNICHOLS® | Perforated Metal, Wire Mesh, Bar, Plank, Fiberglass Grating</entry>
+	<entry key="page.url">/index.html</entry>
+
+	<entry key="slider.css-selector">hero-slider</entry>
+
+	<entry key="section.1.css-selector">section.section-featured</entry>
+	<entry key="section.2.css-selector">section.home-lead-block</entry>
+	<entry key="section.3.css-selector">section.homepage-info</entry>
+	<entry key="section.4.css-selector">section.homepage-promo-info</entry>
+	<entry key="section.5.css-selector">section.home-article</entry>
+
+</properties>
+

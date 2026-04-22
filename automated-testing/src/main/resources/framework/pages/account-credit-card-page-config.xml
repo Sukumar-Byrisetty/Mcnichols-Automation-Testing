@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="billing.first.name">Alexa</entry>
+	<entry key="billing.last.name">Tester</entry>
+	<entry key="billing.address1">2502 n Rocky Point #303</entry>
+	<entry key="billing.city">TAMPA</entry>
+	<entry key="billing.state">FL - Florida</entry>
+	<entry key="billing.zip.code">33634-5341</entry>	
+	<entry key="billing.phone">8135555555</entry>
+	<entry key="billing.email">alexa.tester.mcnichols@yopmail.com</entry>
+	<entry key="billing.creditcard.number">4111111111111111</entry>
+	<entry key="billing.cardtype">card_type_001</entry>
+	<entry key="billing.card_expiry_month">09</entry>
+	<entry key="billing.card_expiry_year">2028</entry>
+	<entry key="billing.cvn">123</entry>
+	
+</properties>
