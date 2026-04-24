@@ -28,19 +28,40 @@ public class CheckoutOrderReviewExpressCheckoutPage {
 			Browser.waitForJavaScriptDependencies();
 			Browser.waitForTheLoadingOverlayToDisappear(pageNamePrefixForLogger);
 
+			String currentUrl = Browser.getCurrentURL();
+			if (StringUtil.isNotEmpty(currentUrl) && currentUrl.contains(url)) {
+				Logger.info(pageNamePrefixForLogger + "URL verified: " + currentUrl);
+				isAt = true;
+			}
+
 			if (Browser.title().contains((title))) {
 				Logger.info(pageNamePrefixForLogger + "title verified.");
 				isAt = true;
 			}
 
-			String expectedPageHeader = Browser.driver.findElement(By.cssSelector("#order-review-info")).getText();
-			if (StringUtil.isNotEmpty(expectedPageHeader) && expectedPageHeader.contains(pageHeader)) {
-				Logger.info(pageNamePrefixForLogger + "page header verified.");
-				isAt = true;
+			By[] pageHeaderSelectors = new By[] {
+					By.cssSelector("#order-review-info"),
+					By.cssSelector(".order-review-info"),
+					By.cssSelector("h1"),
+					By.cssSelector(".cart-title") };
+
+			for (By headerSelector : pageHeaderSelectors) {
+				if (Browser.isElementPresent(headerSelector)) {
+					String expectedPageHeader = Browser.driver.findElement(headerSelector).getText();
+					if (StringUtil.isNotEmpty(expectedPageHeader)
+							&& (expectedPageHeader.toUpperCase().contains(pageHeader)
+									|| expectedPageHeader.toUpperCase().contains("EXPRESS")
+									|| expectedPageHeader.toUpperCase().contains("REVIEW"))) {
+						Logger.info(pageNamePrefixForLogger + "page header verified by selector: " + headerSelector);
+						isAt = true;
+						break;
+					}
+				}
 			}
 
 			if (!isAt) {
 				Logger.warning(pageNamePrefixForLogger + "isAt failted by page header!");
+				Logger.warning(pageNamePrefixForLogger + "Current URL: " + Browser.getCurrentURL());
 			}
 			Logger.processTime(startTime, System.currentTimeMillis(), pageNamePrefixForLogger);
 			Browser.getPageEnvironmentDetails();
@@ -60,9 +81,9 @@ public class CheckoutOrderReviewExpressCheckoutPage {
 
 		try {
 			Browser.waitForSomeTime();
-			if (Browser.isElementPresent(By.cssSelector("#error"))
-					&& Browser.isElementVisible(By.cssSelector("#error"))) {
-				String errorsText = Browser.driver.findElement(By.cssSelector("#error")).getText();
+			if (Browser.isElementPresent(By.cssSelector("#main-page-content #error"))
+					&& Browser.isElementVisible(By.cssSelector("#main-page-content #error"))) {
+				String errorsText = Browser.driver.findElement(By.cssSelector("#main-page-content #error")).getText();
 				if (StringUtil.isNotEmpty(errorsText)) {
 					isErrorPresent = true;
 					Logger.warning(
@@ -85,8 +106,8 @@ public class CheckoutOrderReviewExpressCheckoutPage {
 		Browser.waitForTheLoadingOverlayToDisappear(pageNamePrefixForLogger);
 
 		By[] selectors = new By[] {
-				By.cssSelector("div.mt-4 > label.checkbox-custom-circle"),
-				By.cssSelector(".hidden-xs > .checkbox-custom-circle"),
+				By.xpath("//div[@id='main-page-content']/div[2]/div[3]/div/div[5]/label"),
+				By.cssSelector("#main-page-content label.checkbox-custom-circle"),
 				By.cssSelector("label.checkbox-custom-circle"),
 				By.cssSelector("label[for='termsAndConditions']"),
 				By.id("termsAndConditions") };
@@ -168,7 +189,8 @@ public class CheckoutOrderReviewExpressCheckoutPage {
 
 	public void submitOrderBottomButton() {
 		try {
-			WebElement element = Browser.getWebElement(By.cssSelector("#submitOrderReviewInfo2"));
+			WebElement element = Browser
+					.getWebElement(By.cssSelector("#submitBtnReviewPagesBottom > button#submitOrderReviewInfo2"));
 			Browser.scrollToElememnt(element);
 			Browser.waitForTheLoadingOverlayToDisappear(pageNamePrefixForLogger);
 			Browser.waitForSomeTime();

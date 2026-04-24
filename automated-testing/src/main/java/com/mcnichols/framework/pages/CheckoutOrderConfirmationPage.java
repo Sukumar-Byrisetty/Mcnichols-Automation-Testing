@@ -1,11 +1,11 @@
 package com.mcnichols.framework.pages;
 
-import java.util.Properties;
+import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import com.mcnichols.framework.Browser;
-import com.mcnichols.framework.config.TestingConfig;
 import com.mcnichols.framework.util.Logger;
 import com.mcnichols.framework.util.StringUtil;
 
@@ -16,8 +16,7 @@ public class CheckoutOrderConfirmationPage {
 	public static String title = "Order Confirmation";
 	public static String pageHeader = "ITEMS ORDERED";
 	public static String pageNamePrefixForLogger = "Checkout - Order Confirmation Page - ";
-
-	Properties properties = TestingConfig.getProperties(PROPERTY_FILE);
+	private static final String CONFIRMATION_ROOT = "#confirmation-page";
 
 	public boolean isAt() {
 		return isAt(false);
@@ -82,7 +81,7 @@ public class CheckoutOrderConfirmationPage {
 
 		// Check 4: Order confirmation container is present
 		if (!isAt) {
-			if (Browser.isElementPresent(By.cssSelector("#confirmation-page"))) {
+			if (Browser.isElementPresent(By.cssSelector(CONFIRMATION_ROOT))) {
 				Logger.info(pageNamePrefixForLogger + "confirmation page container verified.");
 				isAt = true;
 			}
@@ -99,14 +98,113 @@ public class CheckoutOrderConfirmationPage {
 		Browser.driver.get(baseUrl + url);
 	}
 
-	public boolean isOrderNumberPresent() {
-		if (Browser.isElementPresent(By.cssSelector("#confirmation-page .confirm-order-id"))) {
-			String orderNumberText = Browser.driver.findElement(By.cssSelector("#confirmation-page .confirm-order-id"))
-					.getText();
-			Logger.info(pageNamePrefixForLogger + "Confirmed Web Reference #: " + orderNumberText);
-			return true;
+	private String getFirstVisibleTrimmedText(By selector) {
+		try {
+			Browser.waitForPresenceOfElement(selector, 5);
+		} catch (Exception e) {
+			return "";
 		}
-		Logger.warning(pageNamePrefixForLogger + "Web Reference # is missing!");
-		return false;
+
+		List<WebElement> candidates = Browser.driver.findElements(selector);
+		for (WebElement candidate : candidates) {
+			if (!candidate.isDisplayed()) {
+				continue;
+			}
+
+			String candidateText = candidate.getText();
+			if (candidateText != null) {
+				candidateText = candidateText.trim();
+			}
+
+			if (StringUtil.isNotEmpty(candidateText)
+					&& !"Web Reference #".equalsIgnoreCase(candidateText)
+					&& !"Web Reference".equalsIgnoreCase(candidateText)) {
+				return candidateText;
+			}
+		}
+
+		return "";
+	}
+
+	private String validateWebReference(String text) {
+		text = text.trim();
+
+		if (!text.matches("(?i)^[A-Z]?\\d{5,}$")) {
+			throw new RuntimeException(pageNamePrefixForLogger + "Invalid Web Reference format: " + text);
+		}
+
+		return text;
+	}
+
+	private String extractWebReference(String text) {
+		text = text.trim();
+
+		java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("([A-Z]?\\d{5,})");
+		java.util.regex.Matcher matcher = pattern.matcher(text);
+		String lastMatch = null;
+
+		while (matcher.find()) {
+			lastMatch = matcher.group(1);
+		}
+
+		if (lastMatch != null) {
+			return lastMatch.trim();
+		}
+
+		throw new RuntimeException(pageNamePrefixForLogger + "Unable to extract Web Reference from: " + text);
+	}
+
+	public String getValidatedOrderNumber() {
+		Browser.waitForJavaScriptDependencies();
+		Browser.waitForTheLoadingOverlayToDisappear(pageNamePrefixForLogger);
+		Browser.waitForElementToBeVisible(By.cssSelector(CONFIRMATION_ROOT));
+
+		By valueSelector = By.cssSelector(CONFIRMATION_ROOT + " .confirm-order-number .font-weight-normal");
+		By containerSelector = By.cssSelector(CONFIRMATION_ROOT + " .confirm-order-number");
+
+		String value = getFirstVisibleTrimmedText(valueSelector);
+		if (StringUtil.isNotEmpty(value)) {
+			String validatedValue = validateWebReference(value);
+			return logAndReturn(validatedValue);
+		}
+
+		String containerText = getFirstVisibleTrimmedText(containerSelector);
+		if (StringUtil.isNotEmpty(containerText)) {
+			String extracted = extractWebReference(containerText);
+			String validatedValue = validateWebReference(extracted);
+			return logAndReturn(validatedValue);
+		}
+
+		By[] fallbackSelectors = new By[] {
+				By.cssSelector(CONFIRMATION_ROOT + " .confirm-order-id"),
+				By.cssSelector(CONFIRMATION_ROOT + " [data-testid='web-reference']"),
+				By.cssSelector(CONFIRMATION_ROOT + " [data-test='web-reference']"),
+				By.cssSelector(CONFIRMATION_ROOT + " #webReference") };
+
+		for (By selector : fallbackSelectors) {
+			String candidate = getFirstVisibleTrimmedText(selector);
+			if (StringUtil.isNotEmpty(candidate)) {
+				String validatedValue = validateWebReference(extractWebReference(candidate));
+				return logAndReturn(validatedValue);
+			}
+		}
+
+		String currentUrl = Browser.getCurrentURL();
+		String errorMessage = pageNamePrefixForLogger + "Web Reference # is missing or empty.";
+		Logger.warning(errorMessage);
+		if (StringUtil.isNotEmpty(currentUrl)) {
+			Logger.warning(pageNamePrefixForLogger + "Current URL at failure: " + currentUrl);
+		}
+		throw new RuntimeException(errorMessage);
+	}
+
+	private String logAndReturn(String value) {
+		Logger.info(pageNamePrefixForLogger + "Confirmed Web Reference #: " + value);
+		return value;
+	}
+
+	public boolean isOrderNumberPresent() {
+		String validatedOrderNumber = getValidatedOrderNumber();
+		return StringUtil.isNotEmpty(validatedOrderNumber);
 	}
 }

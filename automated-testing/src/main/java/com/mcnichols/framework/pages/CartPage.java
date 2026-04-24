@@ -12,6 +12,11 @@ import com.mcnichols.framework.util.Logger;
 import com.mcnichols.framework.util.StringUtil;
 
 public class CartPage {
+	private static final By[] EXPRESS_CHECKOUT_SELECTORS = new By[] {
+			By.cssSelector("button.cart-express-checkout-btn"),
+			By.cssSelector("a.cart-express-checkout-btn"),
+			By.cssSelector(".cart-express-checkout-btn") };
+
 	public static final String PROPERTY_FILE = "cart-page-config.xml";
 
 	public static String url = "/checkout/cart.jsp";
@@ -38,9 +43,9 @@ public class CartPage {
 				if (!isAt && StringUtil.isNotEmpty(expectedPageHeader) && expectedPageHeader.contains(pageHeader)) {
 					Logger.info(pageNamePrefixForLogger + "page header verified.");
 					isAt = true;
-				}	
+				}
 			}
-			
+
 			Logger.processTime(startTime, System.currentTimeMillis(), pageNamePrefixForLogger);
 			Browser.getPageEnvironmentDetails();
 		} catch (Exception e) {
@@ -60,7 +65,7 @@ public class CartPage {
 				Logger.info(pageNamePrefixForLogger + "Request Quote button verified.");
 				return true;
 			}
-			
+
 		} catch (Exception e) {
 			Logger.warning(pageNamePrefixForLogger + "Request Quote button is not present!");
 		}
@@ -73,7 +78,7 @@ public class CartPage {
 				Logger.info(pageNamePrefixForLogger + "Request Quote button verified.");
 				return true;
 			}
-			
+
 		} catch (Exception e) {
 			Logger.warning(pageNamePrefixForLogger + "Request Quote button is not present!");
 		}
@@ -116,43 +121,83 @@ public class CartPage {
 
 	public void checkout() {
 		try {
-			WebElement element = Browser.getWebElement(By.cssSelector("button.cart-checkout-btn.xs-cart-checkout-visible"));
+			WebElement element = Browser
+					.getWebElement(By.cssSelector("button.cart-checkout-btn.xs-cart-checkout-visible"));
 			Browser.click(element);
 			Logger.info(pageNamePrefixForLogger + "Selected Checkout button.");
 		} catch (Exception e) {
-			Logger.warning(pageNamePrefixForLogger + "Issue clicking Checkout button, attempting to use JavaScriptExecuter to send click to element.");
+			Logger.warning(pageNamePrefixForLogger
+					+ "Issue clicking Checkout button, attempting to use JavaScriptExecuter to send click to element.");
 			e.printStackTrace();
 		}
 	}
-	
+
 	public boolean isExpressCheckoutAvailable() {
 		try {
-			if (Browser.isElementPresent(By.cssSelector("button.cart-express-checkout-btn"))) {
-				Logger.info(pageNamePrefixForLogger + "Express Checkout button is present.");
-				return true;
+			for (By selector : EXPRESS_CHECKOUT_SELECTORS) {
+				if (Browser.isElementPresent(selector)) {
+					List<WebElement> expressButtons = Browser.driver.findElements(selector);
+					for (WebElement expressButton : expressButtons) {
+						if (expressButton.isDisplayed() && expressButton.isEnabled()) {
+							Logger.info(pageNamePrefixForLogger + "Express Checkout button is present and clickable.");
+							return true;
+						}
+					}
+				}
 			}
-			
+
 		} catch (Exception e) {
-			Logger.info(pageNamePrefixForLogger + "Express Checkout button is not present!");
+			Logger.info(pageNamePrefixForLogger + "Express Checkout button is not available for click.");
 		}
 		return false;
 	}
 
 	public void expressCheckout() {
-		WebElement element = Browser.getWebElement(By.cssSelector("button.cart-express-checkout-btn"));
-		Browser.scrollToElememnt(element);
-		Browser.waitForSomeTime();
+		WebElement expressCheckoutElement = null;
 
-		Browser.click(element);
+		for (By selector : EXPRESS_CHECKOUT_SELECTORS) {
+			if (Browser.isElementPresent(selector)) {
+				List<WebElement> expressButtons = Browser.driver.findElements(selector);
+				for (WebElement expressButton : expressButtons) {
+					if (expressButton.isDisplayed() && expressButton.isEnabled()) {
+						expressCheckoutElement = expressButton;
+						break;
+					}
+				}
+			}
+
+			if (expressCheckoutElement != null) {
+				break;
+			}
+		}
+
+		if (expressCheckoutElement == null) {
+			throw new RuntimeException(pageNamePrefixForLogger + "Express Checkout button is not visible/clickable.");
+		}
+
+		String startUrl = Browser.getCurrentURL();
+		Browser.scrollToElememnt(expressCheckoutElement);
+		Browser.waitForSomeTime();
+		Browser.click(expressCheckoutElement);
+		Browser.waitForSomeTime(4000);
+
+		String currentUrl = Browser.getCurrentURL();
+		Logger.info(
+				pageNamePrefixForLogger + "Express Checkout start URL: " + startUrl + " current URL: " + currentUrl);
+
+		if (currentUrl.contains("/checkout/review.jsp")) {
+			throw new RuntimeException(
+					pageNamePrefixForLogger + "Express Checkout click routed to standard review page.");
+		}
 	}
 
 	public int getTotalNumberOfCartedItems() {
 		int countOfItems = 0;
 		String cssSelector = "#minicart .cart .count";
-		
+
 		if (Browser.isElementPresent(By.cssSelector(cssSelector))) {
 			WebElement element = Browser.getWebElement(By.cssSelector(cssSelector));
-			
+
 			if (StringUtil.isNotEmpty(element.getText())) {
 				countOfItems = Integer.valueOf(element.getText());
 				Logger.info(pageNamePrefixForLogger + "Carted items: " + countOfItems);
@@ -162,19 +207,21 @@ public class CartPage {
 		} else {
 			countOfItems = Browser.getCartedItemsCount();
 		}
-		
+
 		return countOfItems;
 	}
 
 	public boolean doesItemQuantitiesExceedLimitPerItem() {
 		boolean doesItemQuantitiesExceedLimitPerItem = false;
 
-		List<WebElement> cartQtyValueElements = Browser.driver.findElements(By.cssSelector(".cart-QTY-value .visible-print.fake-print-qty"));
+		List<WebElement> cartQtyValueElements = Browser.driver
+				.findElements(By.cssSelector(".cart-QTY-value .visible-print.fake-print-qty"));
 		for (WebElement cartQtyValueElement : cartQtyValueElements) {
 
 			String cartQtyValue = cartQtyValueElement.getText();
-			if (StringUtil.isNotEmpty(cartQtyValue) && Integer.valueOf(cartQtyValue) > 5) { 
-				Logger.info(pageNamePrefixForLogger + "An item exceed the quantities limit per item.  Quantity value: " + cartQtyValue);
+			if (StringUtil.isNotEmpty(cartQtyValue) && Integer.valueOf(cartQtyValue) > 5) {
+				Logger.info(pageNamePrefixForLogger + "An item exceed the quantities limit per item.  Quantity value: "
+						+ cartQtyValue);
 				doesItemQuantitiesExceedLimitPerItem = true;
 				break;
 			}
@@ -183,7 +230,8 @@ public class CartPage {
 		if (!doesItemQuantitiesExceedLimitPerItem) {
 			int cartedItems = getTotalNumberOfCartedItems();
 			if (cartedItems > 5) {
-				Logger.info(pageNamePrefixForLogger + "An item exceed the quantities limit per item.  Quantity value: " + cartedItems);
+				Logger.info(pageNamePrefixForLogger + "An item exceed the quantities limit per item.  Quantity value: "
+						+ cartedItems);
 				doesItemQuantitiesExceedLimitPerItem = true;
 			}
 		}
@@ -192,11 +240,12 @@ public class CartPage {
 	}
 
 	public void removeCartedItems() {
-		
-		int numberOfCartedItems = getTotalNumberOfCartedItems(); 
+
+		int numberOfCartedItems = getTotalNumberOfCartedItems();
 		if (numberOfCartedItems >= 1) {
 			for (int i = 0; i < numberOfCartedItems; i++) {
-				List<WebElement> cartQtyValueElements = Browser.driver.findElements(By.cssSelector(".cart-delete-icon"));
+				List<WebElement> cartQtyValueElements = Browser.driver
+						.findElements(By.cssSelector(".cart-delete-icon"));
 				for (WebElement cartQtyValueElement : cartQtyValueElements) {
 					Browser.click(cartQtyValueElement);
 					Browser.waitForSomeTime();
@@ -216,6 +265,5 @@ public class CartPage {
 	// Add function to determine how many items carted
 	// Add function to remove item(s)
 	// Add function to adjust item quantity
-	
 
 }

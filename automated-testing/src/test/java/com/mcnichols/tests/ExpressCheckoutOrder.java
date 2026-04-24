@@ -74,14 +74,15 @@ public class ExpressCheckoutOrder extends TestClassBase {
 		}
 
 		Browser.waitForSomeTime(15000);
-		Pages.checkoutOrderReviewPage().selectTermsAndConditions();
+		Pages.checkoutOrderReviewExpressCheckoutPage().selectTermsAndConditions();
 		Browser.waitForSomeTime();
 	}
 
 	@Test(dependsOnMethods = { "canGoToOrderReviewPage" })
 	public void canGoToOrderConfirmationPage() throws Exception {
 		Pages.checkoutOrderReviewExpressCheckoutPage().submitOrderBottomButton();
-		verifyFalse(Pages.checkoutOrderReviewPage().isErrorPresent(), "Error occurred submitting the order!");
+		verifyFalse(Pages.checkoutOrderReviewExpressCheckoutPage().isErrorPresent(),
+				"Error occurred submitting the order!");
 
 		Browser.waitForSomeTime(10000);
 		verifyTrue(Pages.checkoutOrderConfirmationPage().isAt(true), "Is at Order Confirmation Page");
