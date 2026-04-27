@@ -919,14 +919,18 @@ public class CheckoutShippingPage {
 
 			String[] candidateSelectors = new String[] {
 					"#commonCarrierCheckbox",
+					"#commonCarrierCheckbox input[value='commonCarrier']",
 					"#commonCarrierCheckbox input[name='/vsg/commerce/order/purchase/DeliveryShippingFormHandler.editValue.selectedCarrier']",
+					"#selectCarrierSection input[value='commonCarrier']",
 					"input[name='/vsg/commerce/order/purchase/DeliveryShippingFormHandler.editValue.selectedCarrier']",
 					"#selectCarrierSection label",
 					"#shippingMethodContent input[name='/vsg/commerce/order/purchase/DeliveryShippingFormHandler.editValue.selectedCarrier']",
 					"#shippingMethodContent label[for*='carrier' i]"
 			};
 
-			if (selectedUps || clickFirstAvailableSelector(candidateSelectors)) {
+			boolean selectedCommonCarrier = selectedUps || clickFirstAvailableSelector(candidateSelectors);
+
+			if (selectedCommonCarrier) {
 				if (selectedUps) {
 					Logger.info(pageNamePrefixForLogger + "Selected UPS carrier option.");
 				} else {
@@ -956,6 +960,9 @@ public class CheckoutShippingPage {
 
 	private boolean selectUpsCarrierIfAvailable() {
 		By[] upsCarrierCandidates = new By[] {
+				By.cssSelector("#commonCarrierCheckbox"),
+				By.cssSelector("#commonCarrierCheckbox input[value='commonCarrier']"),
+				By.cssSelector("#selectCarrierSection input[value='commonCarrier']"),
 				By.cssSelector("#selectCarrierSection input[value*='UPS' i]"),
 				By.cssSelector("#selectCarrierSection input[id*='ups' i]"),
 				By.cssSelector(
@@ -972,22 +979,116 @@ public class CheckoutShippingPage {
 		for (By candidate : upsCarrierCandidates) {
 			List<WebElement> elements = Browser.driver.findElements(candidate);
 			for (WebElement element : elements) {
-				if (!element.isDisplayed()) {
+				if (!element.isDisplayed() && !isHiddenCarrierInput(element)) {
 					continue;
 				}
 
 				try {
-					Browser.scrollToElememnt(element);
-					Browser.click(element);
-					dispatchChangeEventForFormControl(element);
-					Browser.waitForSomeTime(400);
-					return true;
+					if (selectCarrierElement(element)) {
+						return true;
+					}
 				} catch (Exception ignored) {
 				}
 			}
 		}
 
 		return false;
+	}
+
+	private boolean selectCarrierElement(WebElement element) {
+		WebElement carrierInput = resolveCarrierInput(element);
+
+		if (element.isDisplayed()) {
+			Browser.scrollToElememnt(element);
+			Browser.click(element);
+		}
+
+		if (carrierInput != null) {
+			setCarrierInputSelected(carrierInput);
+		}
+
+		Browser.waitForSomeTime(400);
+		return isCarrierSelectionApplied(element, carrierInput);
+	}
+
+	private WebElement resolveCarrierInput(WebElement element) {
+		try {
+			String tagName = element.getTagName();
+			if (StringUtil.isNotEmpty(tagName) && "input".equalsIgnoreCase(tagName)) {
+				return element;
+			}
+
+			List<WebElement> nestedInputs = element.findElements(By.cssSelector(
+					"input[name='/vsg/commerce/order/purchase/DeliveryShippingFormHandler.editValue.selectedCarrier']"));
+			if (!nestedInputs.isEmpty()) {
+				return nestedInputs.get(0);
+			}
+
+			String forAttribute = element.getAttribute("for");
+			if (StringUtil.isNotEmpty(forAttribute)) {
+				List<WebElement> mappedInputs = Browser.driver.findElements(By.id(forAttribute));
+				if (!mappedInputs.isEmpty()) {
+					return mappedInputs.get(0);
+				}
+			}
+		} catch (Exception ignored) {
+		}
+
+		return null;
+	}
+
+	private void setCarrierInputSelected(WebElement input) {
+		try {
+			JavascriptExecutor js = (JavascriptExecutor) Browser.driver;
+			js.executeScript(
+					"arguments[0].checked = true;"
+							+ "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));"
+							+ "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));"
+							+ "arguments[0].dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));"
+							+ "if (typeof carrierSelectedForShipping === 'function') { carrierSelectedForShipping(); }",
+					input);
+		} catch (Exception ignored) {
+		}
+	}
+
+	private boolean isCarrierSelectionApplied(WebElement element, WebElement carrierInput) {
+		try {
+			if (carrierInput != null && carrierInput.isSelected()) {
+				return true;
+			}
+		} catch (Exception ignored) {
+		}
+
+		try {
+			String className = element.getAttribute("class");
+			if (StringUtil.isNotEmpty(className) && className.toLowerCase().contains("checked")) {
+				return true;
+			}
+		} catch (Exception ignored) {
+		}
+
+		try {
+			List<WebElement> selectedCarrierInputs = Browser.driver.findElements(By.cssSelector(
+					"input[name='/vsg/commerce/order/purchase/DeliveryShippingFormHandler.editValue.selectedCarrier']:checked"));
+			return !selectedCarrierInputs.isEmpty();
+		} catch (Exception ignored) {
+			return false;
+		}
+	}
+
+	private boolean isHiddenCarrierInput(WebElement element) {
+		try {
+			String tagName = element.getTagName();
+			String type = element.getAttribute("type");
+			String name = element.getAttribute("name");
+			return "input".equalsIgnoreCase(tagName)
+					&& StringUtil.isNotEmpty(type)
+					&& "radio".equalsIgnoreCase(type)
+					&& StringUtil.isNotEmpty(name)
+					&& name.contains("DeliveryShippingFormHandler.editValue.selectedCarrier");
+		} catch (Exception ignored) {
+			return false;
+		}
 	}
 
 	private void waitForCarrierOptionsToRender() {
